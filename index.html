@@ -2,1180 +2,1109 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>moments · collage</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@300;400;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Liu+Jian+Mao+Cao&family=Caveat:wght@400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #2a2520;
-  --panel: #1e1b17;
-  --accent: #c8a96e;
-  --text: #f0ebe3;
-  --muted: #7a7268;
-  --border: #3a3530;
-  --radius: 10px;
+:root{
+  --bg:#28231e;--panel:#1c1813;--accent:#c8a96e;--text:#f0ebe3;
+  --muted:#6e6458;--border:#38322c;--r:10px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Noto Serif SC', serif; overflow-x: hidden; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'ZCOOL XiaoWei',serif;overflow-x:hidden;}
 
-/* ── HEADER ── */
-.header {
-  position: sticky; top: 0; z-index: 100;
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-  display: flex; align-items: center; justify-content: space-between;
+.header{
+  position:sticky;top:0;z-index:100;
+  background:var(--panel);border-bottom:1px solid var(--border);
+  padding:11px 16px;display:flex;align-items:center;justify-content:space-between;
 }
-.header h1 { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 400; color: var(--accent); }
-.header span { font-family: 'Caveat', cursive; font-size: 12px; color: var(--muted); }
+.header h1{font-family:'Playfair Display',serif;font-size:17px;font-weight:400;color:var(--accent);letter-spacing:.06em;}
+.header small{font-family:'Caveat',cursive;font-size:12px;color:var(--muted);}
 
-/* ── MAIN LAYOUT ── */
-.main { display: flex; flex-direction: column; }
-
-/* ── CANVAS AREA ── */
-.canvas-section {
-  background: #111;
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px 16px;
-  min-height: 60vw;
+/* canvas */
+.canvas-wrap{
+  background:#0e0c0a;display:flex;align-items:center;justify-content:center;
+  padding:16px;min-height:56vw;position:relative;
 }
-#mainCanvas {
-  border-radius: 6px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.6);
-  touch-action: none;
-  max-width: 100%;
-  cursor: crosshair;
+#cvs{
+  border-radius:5px;box-shadow:0 6px 40px rgba(0,0,0,.7);
+  touch-action:none;display:block;max-width:100%;
+  image-rendering:crisp-edges;
 }
 
-/* ── TABS ── */
-.tabs {
-  display: flex;
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  scrollbar-width: none;
+/* tabs */
+.tabs{
+  display:flex;background:var(--panel);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;scrollbar-width:none;
 }
-.tabs::-webkit-scrollbar { display: none; }
-.tab {
-  flex: 1; min-width: 64px;
-  padding: 11px 8px;
-  text-align: center;
-  font-size: 11px;
-  color: var(--muted);
-  cursor: pointer;
-  white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
+.tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex:1;min-width:52px;padding:11px 4px;
+  text-align:center;font-size:11px;color:var(--muted);
+  cursor:pointer;white-space:nowrap;
+  border-bottom:2px solid transparent;transition:color .2s,border-color .2s;
 }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);}
 
-/* ── PANELS ── */
-.panel { display: none; padding: 16px; background: var(--bg); }
-.panel.active { display: block; }
+.panel{display:none;padding:14px 14px 24px;}
+.panel.on{display:block;}
 
-.section-label {
-  font-size: 10px; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--muted);
-  margin-bottom: 10px; font-family: 'Playfair Display', serif;
-}
+.lbl{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;font-family:'Playfair Display',serif;}
 
-/* Upload zone */
-.upload-zone {
-  border: 1.5px dashed var(--border);
-  border-radius: var(--radius);
-  padding: 20px 12px;
-  text-align: center; cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
-  margin-bottom: 14px;
+/* upload */
+.up-zone{
+  border:1.5px dashed var(--border);border-radius:var(--r);
+  padding:18px;text-align:center;cursor:pointer;
+  transition:border-color .2s,background .2s;margin-bottom:12px;
 }
-.upload-zone:hover, .upload-zone:active { border-color: var(--accent); background: rgba(200,169,110,0.06); }
-.upload-zone .icon { font-size: 28px; margin-bottom: 6px; }
-.upload-zone p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.up-zone:hover{border-color:var(--accent);background:rgba(200,169,110,.06);}
+.up-zone p{font-size:12px;color:var(--muted);line-height:1.6;}
 
-/* Thumb grid */
-.thumb-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+/* thumb grid */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.tcard{
+  position:relative;border-radius:7px;overflow:hidden;
+  aspect-ratio:1;cursor:pointer;
+  border:2px solid transparent;transition:border-color .15s;
 }
-.thumb-card {
-  position: relative; border-radius: 8px; overflow: hidden;
-  aspect-ratio: 1; cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.2s;
+.tcard.sel{border-color:var(--accent);}
+.tcard img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.tcard .ttag{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(0,0,0,.6);padding:4px 6px;
+  font-family:'Ma Shan Zheng',cursive;font-size:11px;color:rgba(255,255,255,.85);
+  border:none;outline:none;width:100%;
 }
-.thumb-card.selected { border-color: var(--accent); }
-.thumb-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-.thumb-card .thumb-tag {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: rgba(0,0,0,0.6);
-  padding: 4px 6px;
-  font-family: 'Caveat', cursive; font-size: 11px; color: rgba(255,255,255,0.85);
-  border: none; outline: none; width: 100%;
-}
-.thumb-card .thumb-remove {
-  position: absolute; top: 4px; right: 4px;
-  width: 20px; height: 20px;
-  background: rgba(0,0,0,0.7); border: none;
-  color: #fff; font-size: 12px;
-  border-radius: 50%; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+.tcard .tdel{
+  position:absolute;top:3px;right:3px;
+  width:20px;height:20px;background:rgba(0,0,0,.7);
+  border:none;color:#fff;font-size:13px;border-radius:50%;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
 }
 
-/* Color row */
-.color-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
-.color-dot {
-  width: 30px; height: 30px; border-radius: 50%;
-  cursor: pointer; border: 2px solid transparent;
-  transition: transform 0.15s, border-color 0.15s;
-  flex-shrink: 0;
+/* controls */
+.ctrl{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.ctrl label{font-size:11px;color:var(--muted);flex-shrink:0;min-width:54px;}
+.ctrl input[type=range]{flex:1;accent-color:var(--accent);}
+.ctrl input[type=color]{
+  width:34px;height:28px;border:1px solid var(--border);
+  border-radius:5px;padding:2px;background:none;cursor:pointer;
 }
-.color-dot:hover { transform: scale(1.15); }
-.color-dot.active { border-color: white; }
-
-/* Controls */
-.ctrl { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.ctrl label { font-size: 11px; color: var(--muted); flex-shrink: 0; min-width: 52px; }
-.ctrl input[type=range] { flex: 1; accent-color: var(--accent); height: 3px; }
-.ctrl input[type=color] {
-  width: 36px; height: 30px;
-  border: 1px solid var(--border); border-radius: 6px;
-  padding: 2px; background: none; cursor: pointer;
+.ctrl select{
+  flex:1;background:var(--panel);border:1px solid var(--border);
+  color:var(--text);padding:7px 8px;border-radius:6px;font-size:12px;outline:none;
 }
-.ctrl select {
-  flex: 1; background: var(--panel);
-  border: 1px solid var(--border); color: var(--text);
-  padding: 7px 8px; border-radius: 6px; font-size: 12px; outline: none;
+.ctrl span{font-size:11px;color:var(--muted);min-width:32px;text-align:right;}
+
+/* selected box */
+.selbox{
+  background:rgba(200,169,110,.08);border:1px solid var(--accent);
+  border-radius:8px;padding:12px;margin-bottom:12px;display:none;
 }
-.ctrl span { font-size: 11px; color: var(--muted); min-width: 28px; text-align: right; }
+.selbox.on{display:block;}
+.selbox .slbl{font-size:11px;color:var(--accent);margin-bottom:8px;font-family:'Caveat',cursive;font-size:13px;}
 
-/* Text items */
-.text-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
-.text-row input[type=text] {
-  flex: 1; background: var(--panel);
-  border: 1px solid var(--border); color: var(--text);
-  padding: 8px 10px; border-radius: 6px; font-size: 13px;
-  font-family: 'Caveat', cursive; outline: none;
+/* text items */
+.trow{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+.trow input{
+  flex:1;background:var(--panel);border:1px solid var(--border);
+  color:var(--text);padding:8px 10px;border-radius:6px;
+  font-family:'Ma Shan Zheng',cursive;font-size:14px;outline:none;
 }
-.text-row input:focus { border-color: var(--accent); }
-.text-row button { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 4px; }
-.text-row button:hover { color: #e07070; }
+.trow input:focus{border-color:var(--accent);}
+.trow button{background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:4px;}
+.trow button:hover{color:#e07070;}
 
-/* Buttons */
-.btn {
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 11px 16px; border-radius: 8px;
-  font-size: 13px; cursor: pointer;
-  border: none; font-family: 'Noto Serif SC', serif;
-  transition: opacity 0.2s, transform 0.1s;
-  width: 100%; margin-bottom: 8px;
+/* buttons */
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 14px;border-radius:8px;font-size:13px;cursor:pointer;
+  border:none;font-family:'ZCOOL XiaoWei',serif;
+  transition:opacity .2s,transform .1s;width:100%;margin-bottom:8px;
 }
-.btn:active { transform: scale(0.97); }
-.btn-primary { background: var(--accent); color: #1a1610; font-weight: 600; }
-.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:active{transform:scale(.97);}
+.btn.p{background:var(--accent);color:#1a1610;font-weight:700;}
+.btn.g{background:transparent;border:1px solid var(--border);color:var(--text);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.btn2 .btn{margin-bottom:0;}
 
-.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-.btn-row .btn { margin-bottom: 0; }
+.prog{height:4px;background:var(--border);border-radius:2px;margin:8px 0;overflow:hidden;}
+.prog-fill{height:100%;background:var(--accent);border-radius:2px;width:0%;transition:width .15s;}
 
-/* Progress */
-.progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin: 8px 0; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.15s; }
+.hr{height:1px;background:var(--border);margin:14px 0;}
 
-.divider { height: 1px; background: var(--border); margin: 16px 0; }
-
-/* Toast */
-.toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  background: rgba(30,27,23,0.95);
-  border: 1px solid var(--border);
-  color: var(--text); padding: 10px 20px;
-  border-radius: 20px; font-size: 13px;
-  z-index: 999; opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none; white-space: nowrap;
+/* palette */
+.prow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
+.psw{
+  width:30px;height:30px;border-radius:6px;cursor:pointer;
+  border:2px solid transparent;transition:transform .15s,border-color .15s;
 }
-.toast.show { opacity: 1; }
+.psw:hover{transform:scale(1.12);}
+.psw.on{border-color:var(--accent);}
 
-/* Selected info */
-.sel-info {
-  background: var(--panel); border-radius: 8px; padding: 10px 12px;
-  margin-bottom: 12px; font-size: 12px; color: var(--muted);
-  display: none;
+/* toast */
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:rgba(28,24,19,.97);border:1px solid var(--border);
+  color:var(--text);padding:9px 18px;border-radius:20px;font-size:12px;
+  z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;
 }
-.sel-info.show { display: block; }
+.toast.on{opacity:1;}
 
-/* Auto palette row */
-.palette-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-.pal-swatch {
-  width: 32px; height: 32px; border-radius: 6px;
-  cursor: pointer; border: 2px solid transparent;
-  transition: transform 0.15s, border-color 0.15s;
-}
-.pal-swatch:hover { transform: scale(1.1); }
-.pal-swatch.active { border-color: var(--accent); }
+/* font preview labels */
+.font-opt{font-size:14px;padding:8px 0;}
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>moments · collage</h1>
-  <span>拼贴动图制作</span>
+  <small>拼贴动图制作</small>
 </div>
 
-<div class="main">
+<div class="canvas-wrap">
+  <canvas id="cvs" width="360" height="520"></canvas>
+</div>
 
-  <!-- CANVAS -->
-  <div class="canvas-section">
-    <canvas id="mainCanvas" width="360" height="520"></canvas>
+<div class="tabs" id="tabs">
+  <div class="tab on" data-t="upload">📷 图片</div>
+  <div class="tab" data-t="bg">🎨 背景</div>
+  <div class="tab" data-t="txt">✍ 文字</div>
+  <div class="tab" data-t="layout">⊞ 布局</div>
+  <div class="tab" data-t="anim">▶ 动画</div>
+  <div class="tab" data-t="out">↓ 导出</div>
+</div>
+
+<!-- UPLOAD TAB -->
+<div class="panel on" id="tab-upload">
+  <div class="lbl">上传图片</div>
+  <div class="up-zone" id="upZone">
+    <p>📂 点击选择（支持多张）</p>
+    <input type="file" id="fileIn" multiple accept="image/*" style="display:none">
   </div>
+  <div class="tgrid" id="tgrid"></div>
 
-  <!-- TABS -->
-  <div class="tabs">
-    <div class="tab active" data-tab="upload">📷 图片</div>
-    <div class="tab" data-tab="bg">🎨 背景</div>
-    <div class="tab" data-tab="text">✍️ 文字</div>
-    <div class="tab" data-tab="layout">⊞ 排列</div>
-    <div class="tab" data-tab="anim">▶ 动画</div>
-    <div class="tab" data-tab="export">↓ 导出</div>
-  </div>
+  <div class="hr"></div>
 
-  <!-- PANEL: Upload -->
-  <div class="panel active" id="tab-upload">
-    <div class="section-label">上传图片</div>
-    <div class="upload-zone" id="uploadZone">
-      <div class="icon">🖼</div>
-      <p>点击选择图片（支持多张）</p>
-      <input type="file" id="fileInput" multiple accept="image/*" style="display:none">
+  <div class="selbox" id="selBox">
+    <div class="slbl" id="selLbl">选中：—</div>
+    <div class="ctrl">
+      <label>旋转</label>
+      <input type="range" id="sRot" min="-35" max="35" value="0">
+      <span id="sRotV">0°</span>
     </div>
-    <div class="thumb-grid" id="thumbGrid"></div>
-    <div class="divider"></div>
-    <div class="sel-info" id="selInfo">选中图片后可在此调整</div>
-    <div id="imgControls" style="display:none">
-      <div class="section-label">选中图片操作</div>
-      <div class="ctrl">
-        <label>旋转</label>
-        <input type="range" id="imgRotate" min="-30" max="30" value="0">
-        <span id="imgRotateVal">0°</span>
-      </div>
-      <div class="ctrl">
-        <label>大小</label>
-        <input type="range" id="imgScale" min="40" max="300" value="100">
-        <span id="imgScaleVal">100%</span>
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-ghost" onclick="bringForward()">置于顶层</button>
-        <button class="btn btn-ghost" onclick="deleteSelected()">删除</button>
-      </div>
+    <div class="ctrl">
+      <label>宽度</label>
+      <input type="range" id="sW" min="40" max="320" value="120">
+      <span id="sWV">120</span>
+    </div>
+    <div class="ctrl">
+      <label>高度</label>
+      <input type="range" id="sH" min="40" max="320" value="120">
+      <span id="sHV">120</span>
+    </div>
+    <div class="btn2">
+      <button class="btn g" onclick="bringTop()">置于顶层</button>
+      <button class="btn g" onclick="delSel()" style="color:#e07070;">删除</button>
     </div>
   </div>
+  <p style="font-size:11px;color:var(--muted);line-height:1.7;">
+    💡 点击画布中的图片可选中，再用上方滑条调整；拖拽可移动位置
+  </p>
+</div>
 
-  <!-- PANEL: BG -->
-  <div class="panel" id="tab-bg">
-    <div class="section-label">智能配色（从图片提取）</div>
-    <div class="palette-row" id="autoPalette">
-      <span style="font-size:11px;color:var(--muted);font-style:italic">上传图片后自动生成</span>
-    </div>
-    <div class="divider"></div>
-    <div class="section-label">自定义背景</div>
+<!-- BG TAB -->
+<div class="panel" id="tab-bg">
+  <div class="lbl">智能配色（自动从图片提取）</div>
+  <div class="prow" id="autoPal"><span style="font-size:11px;color:var(--muted);font-style:italic">上传图片后生成</span></div>
+  <div class="hr"></div>
+  <div class="lbl">自定义背景</div>
+  <div class="ctrl">
+    <label>颜色</label>
+    <input type="color" id="bgCol" value="#3a3228">
+  </div>
+  <div class="ctrl">
+    <label>亮度</label>
+    <input type="range" id="bgBr" min="20" max="140" value="80">
+    <span id="bgBrV">80</span>
+  </div>
+  <div class="hr"></div>
+  <div class="lbl">装饰</div>
+  <div class="ctrl">
+    <label>角标框</label>
+    <input type="range" id="cornOp" min="0" max="100" value="40">
+    <span id="cornOpV">40</span>
+  </div>
+  <div class="ctrl">
+    <label>散点</label>
+    <input type="range" id="dotsOp" min="0" max="100" value="55">
+    <span id="dotsOpV">55</span>
+  </div>
+</div>
+
+<!-- TEXT TAB -->
+<div class="panel" id="tab-txt">
+  <div class="lbl">文案标签</div>
+  <div id="txtList"></div>
+  <button class="btn g" onclick="addTxt()" style="margin-bottom:14px">+ 添加文字</button>
+  <div class="hr"></div>
+
+  <div class="selbox on" id="txtSelBox">
+    <div class="slbl">选中文字样式（点击画布文字后生效）</div>
     <div class="ctrl">
       <label>颜色</label>
-      <input type="color" id="bgColor" value="#3a3228">
-    </div>
-    <div class="ctrl">
-      <label>亮度</label>
-      <input type="range" id="bgBright" min="20" max="130" value="80">
-      <span id="bgBrightVal">80</span>
-    </div>
-    <div class="divider"></div>
-    <div class="section-label">装饰元素</div>
-    <div class="ctrl">
-      <label>角标框</label>
-      <input type="range" id="cornerOp" min="0" max="100" value="40">
-    </div>
-    <div class="ctrl">
-      <label>装饰点</label>
-      <input type="range" id="dotsOp" min="0" max="100" value="50">
-    </div>
-  </div>
-
-  <!-- PANEL: Text -->
-  <div class="panel" id="tab-text">
-    <div class="section-label">文案标签</div>
-    <div id="textList"></div>
-    <button class="btn btn-ghost" onclick="addText()" style="margin-bottom:16px">+ 添加文字</button>
-    <div class="divider"></div>
-    <div class="section-label">文字样式</div>
-    <div class="ctrl">
-      <label>颜色</label>
-      <input type="color" id="textColor" value="#f0ebe3">
+      <input type="color" id="tCol" value="#f0ebe3">
     </div>
     <div class="ctrl">
       <label>字体</label>
-      <select id="fontSel">
-        <option value="Caveat">手写体</option>
-        <option value="Playfair Display">衬线体</option>
-        <option value="Noto Serif SC">宋体</option>
-        <option value="monospace">等宽</option>
+      <select id="tFont">
+        <option value="Ma Shan Zheng" style="font-family:'Ma Shan Zheng'" class="font-opt">马善政手书</option>
+        <option value="Liu Jian Mao Cao" style="font-family:'Liu Jian Mao Cao'" class="font-opt">流江毛草</option>
+        <option value="ZCOOL XiaoWei" style="font-family:'ZCOOL XiaoWei'" class="font-opt">站酷小薇</option>
+        <option value="Caveat" class="font-opt">Caveat 手写</option>
+        <option value="Playfair Display" class="font-opt">Playfair 衬线</option>
+        <option value="monospace" class="font-opt">等宽 Mono</option>
       </select>
     </div>
     <div class="ctrl">
       <label>大小</label>
-      <input type="range" id="fontSize" min="10" max="56" value="20">
-      <span id="fontSizeVal">20</span>
+      <input type="range" id="tSz" min="10" max="60" value="20">
+      <span id="tSzV">20</span>
     </div>
-    <p style="font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px">
-      💡 拖拽画布中的文字可调整位置；点击选中后再调整样式
-    </p>
+    <div class="ctrl">
+      <label>不透明</label>
+      <input type="range" id="tAlpha" min="10" max="100" value="100">
+      <span id="tAlphaV">100%</span>
+    </div>
+    <p style="font-size:10px;color:var(--muted);margin-top:4px;">先点画布中的文字选中，再在此修改样式</p>
   </div>
+</div>
 
-  <!-- PANEL: Layout -->
-  <div class="panel" id="tab-layout">
-    <div class="section-label">画布尺寸</div>
-    <div class="ctrl">
-      <label>宽度</label>
-      <input type="range" id="cvW" min="260" max="500" value="360">
-      <span id="cvWVal">360</span>
-    </div>
-    <div class="ctrl">
-      <label>高度</label>
-      <input type="range" id="cvH" min="360" max="800" value="520">
-      <span id="cvHVal">520</span>
-    </div>
-    <div class="divider"></div>
-    <div class="section-label">图片参数</div>
-    <div class="ctrl">
-      <label>默认大小</label>
-      <input type="range" id="defSize" min="60" max="220" value="120">
-      <span id="defSizeVal">120</span>
-    </div>
-    <div class="ctrl">
-      <label>最大旋转</label>
-      <input type="range" id="maxRot" min="0" max="20" value="5">
-      <span id="maxRotVal">5°</span>
-    </div>
-    <div class="divider"></div>
-    <div class="section-label">快速布局</div>
-    <button class="btn btn-primary" onclick="randomLayout()">🎲 随机排列</button>
-    <button class="btn btn-ghost" onclick="gridLayout()">⊞ 网格排列</button>
-    <button class="btn btn-ghost" onclick="resetRotation()">↺ 清除旋转</button>
+<!-- LAYOUT TAB -->
+<div class="panel" id="tab-layout">
+  <div class="lbl">画布尺寸</div>
+  <div class="ctrl">
+    <label>宽</label>
+    <input type="range" id="cvW" min="260" max="500" value="360">
+    <span id="cvWV">360px</span>
   </div>
-
-  <!-- PANEL: Anim -->
-  <div class="panel" id="tab-anim">
-    <div class="section-label">动画预览</div>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="playBtn" onclick="togglePlay()">▶ 播放</button>
-      <button class="btn btn-ghost" onclick="resetAnim()">↺ 重置</button>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
-    <div class="divider"></div>
-    <div class="section-label">动画参数</div>
-    <div class="ctrl">
-      <label>样式</label>
-      <select id="animStyle">
-        <option value="fadeUp">淡入上滑</option>
-        <option value="pop">弹出缩放</option>
-        <option value="fade">简单淡入</option>
-        <option value="drift">漂移淡入</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <label>出现间隔</label>
-      <input type="range" id="animDelay" min="100" max="900" value="350">
-      <span id="animDelayVal">350ms</span>
-    </div>
-    <div class="ctrl">
-      <label>过渡时长</label>
-      <input type="range" id="animDur" min="200" max="1200" value="500">
-      <span id="animDurVal">500ms</span>
-    </div>
+  <div class="ctrl">
+    <label>高</label>
+    <input type="range" id="cvH" min="360" max="800" value="520">
+    <span id="cvHV">520px</span>
   </div>
-
-  <!-- PANEL: Export -->
-  <div class="panel" id="tab-export">
-    <div class="section-label">导出图片</div>
-    <button class="btn btn-primary" onclick="exportPNG()">📷 导出 PNG（高清）</button>
-    <div class="divider"></div>
-    <div class="section-label">导出动图 GIF</div>
-    <div class="ctrl">
-      <label>帧率</label>
-      <select id="gifFps">
-        <option value="8">8 fps（小文件）</option>
-        <option value="12" selected>12 fps（推荐）</option>
-        <option value="20">20 fps（流畅）</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <label>画质</label>
-      <select id="gifQuality">
-        <option value="15">快速（文件小）</option>
-        <option value="8" selected>标准</option>
-        <option value="3">高质量（慢）</option>
-      </select>
-    </div>
-    <button class="btn btn-primary" id="gifBtn" onclick="exportGIF()">🎞 导出 GIF 动图</button>
-    <div class="progress-bar" id="gifProgress" style="display:none">
-      <div class="progress-fill" id="gifFill"></div>
-    </div>
-    <p id="gifStatus" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;"></p>
+  <div class="hr"></div>
+  <div class="lbl">快速布局</div>
+  <div class="ctrl">
+    <label>默认大小</label>
+    <input type="range" id="defSz" min="60" max="240" value="130">
+    <span id="defSzV">130</span>
   </div>
+  <div class="ctrl">
+    <label>最大旋转</label>
+    <input type="range" id="maxRot" min="0" max="20" value="5">
+    <span id="maxRotV">5°</span>
+  </div>
+  <button class="btn p" onclick="rndLayout()">🎲 随机排列</button>
+  <button class="btn g" onclick="gridLayout()">⊞ 网格排列</button>
+  <button class="btn g" onclick="clearRot()">↺ 清除旋转</button>
+</div>
 
+<!-- ANIM TAB -->
+<div class="panel" id="tab-anim">
+  <div class="lbl">动画预览</div>
+  <div class="btn2">
+    <button class="btn p" id="playBtn" onclick="togglePlay()">▶ 播放</button>
+    <button class="btn g" onclick="resetAnim()">↺ 重置</button>
+  </div>
+  <div class="prog"><div class="prog-fill" id="animProg"></div></div>
+  <div class="hr"></div>
+  <div class="lbl">参数</div>
+  <div class="ctrl">
+    <label>样式</label>
+    <select id="animSt">
+      <option value="fadeUp">淡入上滑</option>
+      <option value="pop">弹出缩放</option>
+      <option value="fade">简单淡入</option>
+      <option value="drift">漂移</option>
+    </select>
+  </div>
+  <div class="ctrl">
+    <label>间隔</label>
+    <input type="range" id="animDel" min="100" max="900" value="320">
+    <span id="animDelV">320ms</span>
+  </div>
+  <div class="ctrl">
+    <label>时长</label>
+    <input type="range" id="animDur" min="150" max="1000" value="450">
+    <span id="animDurV">450ms</span>
+  </div>
+</div>
+
+<!-- EXPORT TAB -->
+<div class="panel" id="tab-out">
+  <div class="lbl">导出 PNG（高清）</div>
+  <button class="btn p" onclick="exportPNG()">📷 导出 PNG</button>
+  <div class="hr"></div>
+  <div class="lbl">导出 GIF 动图</div>
+  <div class="ctrl">
+    <label>帧率</label>
+    <select id="gFps">
+      <option value="8">8 fps（小文件）</option>
+      <option value="12" selected>12 fps（推荐）</option>
+      <option value="18">18 fps（流畅）</option>
+    </select>
+  </div>
+  <div class="ctrl">
+    <label>画质</label>
+    <select id="gQ">
+      <option value="10">快速</option>
+      <option value="5" selected>标准</option>
+      <option value="2">高质量</option>
+    </select>
+  </div>
+  <button class="btn p" id="gifBtn" onclick="exportGIF()">🎞 导出 GIF</button>
+  <div class="prog" id="gifProg" style="display:none"><div class="prog-fill" id="gifFill"></div></div>
+  <p id="gifSt" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;"></p>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<!-- GIF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+
 <script>
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // STATE
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 const S = {
-  images: [],   // {id,img,x,y,w,h,rot,tag,z}
-  texts: [],    // {id,text,x,y,color,font,size}
-  bg: '#3a3228',
-  bgBright: 80,
-  cornerOp: 0.4,
-  dotsOp: 0.5,
-  canvasW: 360,
-  canvasH: 520,
-  selectedId: null,
-  selectedType: null, // 'img' | 'text'
+  imgs: [],    // {id, el, x,y,w,h, rot, tag, z}
+  txts: [],    // {id, text, x,y, color, font, size, alpha}
+  bg: '#3a3228', bgBright: 80,
+  cornOp: .4, dotsOp: .55,
+  cW: 360, cH: 520,
+  selId: null, selType: null,  // 'img'|'txt'
   playing: false,
-  animFrames: [],
-  animIdx: 0,
-  animTimer: null,
 };
+let uid = 0;
+const nid = () => 'e' + (++uid);
 
-let idCnt = 0;
-const uid = () => 'i' + (++idCnt);
+const cvs = document.getElementById('cvs');
+const ctx = cvs.getContext('2d');
 
-const canvas = document.getElementById('mainCanvas');
-const ctx = canvas.getContext('2d');
-
-// loaded font images
-const fontMap = {
-  'Caveat': 'Caveat, cursive',
-  'Playfair Display': 'Playfair Display, serif',
-  'Noto Serif SC': 'Noto Serif SC, serif',
-  'monospace': 'monospace',
-};
-
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // TABS
-// ══════════════════════════════════════════
-document.querySelectorAll('.tab').forEach(t => {
-  t.onclick = () => {
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
-    t.classList.add('active');
-    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
-  };
+// ════════════════════════════════════════
+document.getElementById('tabs').addEventListener('click', e => {
+  const t = e.target.closest('.tab');
+  if (!t) return;
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  document.getElementById('tab-' + t.dataset.t).classList.add('on');
 });
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // UPLOAD
-// ══════════════════════════════════════════
-document.getElementById('uploadZone').onclick = () => document.getElementById('fileInput').click();
-document.getElementById('fileInput').onchange = e => loadFiles(e.target.files);
-
-document.getElementById('uploadZone').ondragover = e => { e.preventDefault(); };
-document.getElementById('uploadZone').ondrop = e => { e.preventDefault(); loadFiles(e.dataTransfer.files); };
+// ════════════════════════════════════════
+document.getElementById('upZone').onclick = () => document.getElementById('fileIn').click();
+document.getElementById('fileIn').onchange = e => loadFiles(e.target.files);
+['dragover','dragenter'].forEach(ev => document.getElementById('upZone').addEventListener(ev, e => e.preventDefault()));
+document.getElementById('upZone').addEventListener('drop', e => { e.preventDefault(); loadFiles(e.dataTransfer.files); });
 
 function loadFiles(files) {
-  Array.from(files).forEach(file => {
-    if (!file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-      const imgEl = new Image();
-      imgEl.onload = () => {
-        const id = uid();
-        const defSize = parseInt(document.getElementById('defSize').value);
-        const aspect = imgEl.naturalHeight / imgEl.naturalWidth;
-        const w = defSize * (0.8 + Math.random() * 0.5);
-        const h = w * Math.max(0.6, Math.min(1.5, aspect));
-        const maxRot = parseInt(document.getElementById('maxRot').value);
-        S.images.push({
-          id, img: imgEl,
-          x: 10 + Math.random() * Math.max(10, S.canvasW - w - 20),
-          y: 10 + Math.random() * Math.max(10, S.canvasH - h - 20),
-          w, h, rot: (Math.random() - 0.5) * 2 * maxRot,
-          tag: '', z: S.images.length,
-          scaleBase: w,
-        });
-        draw();
-        buildThumbs();
-        extractColors();
-      };
-      imgEl.src = ev.target.result;
+  Array.from(files).forEach(f => {
+    if (!f.type.startsWith('image/')) return;
+    const r = new FileReader();
+    r.onload = ev => {
+      const el = new Image();
+      el.onload = () => placeImage(el);
+      el.src = ev.target.result;
     };
-    reader.readAsDataURL(file);
+    r.readAsDataURL(f);
   });
 }
 
-// ══════════════════════════════════════════
+function placeImage(el) {
+  const id = nid();
+  const defSz = parseInt(document.getElementById('defSz').value);
+  const aspect = el.naturalHeight / el.naturalWidth;
+  const w = defSz * (.75 + Math.random() * .55);
+  const h = w * Math.max(.55, Math.min(1.6, aspect));
+  const mr = parseInt(document.getElementById('maxRot').value);
+  S.imgs.push({
+    id, el, tag: '',
+    x: 12 + Math.random() * Math.max(10, S.cW - w - 24),
+    y: 12 + Math.random() * Math.max(10, S.cH - h - 24),
+    w, h, rot: (Math.random() - .5) * 2 * mr,
+    z: S.imgs.length,
+  });
+  draw(); buildThumbs(); extractColors();
+}
+
+// ════════════════════════════════════════
 // THUMBNAILS
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function buildThumbs() {
-  const grid = document.getElementById('thumbGrid');
-  grid.innerHTML = '';
-  S.images.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'thumb-card' + (S.selectedId === item.id ? ' selected' : '');
-    card.innerHTML = `<img src="${item.img.src}">
-      <button class="thumb-remove" onclick="deleteById('${item.id}');event.stopPropagation()">×</button>
-      <input class="thumb-tag" type="text" placeholder="标签" value="${item.tag}"
-        oninput="updateTag('${item.id}',this.value)" onclick="event.stopPropagation()">`;
-    card.onclick = () => selectImg(item.id);
-    grid.appendChild(card);
+  const g = document.getElementById('tgrid');
+  g.innerHTML = '';
+  S.imgs.forEach(item => {
+    const c = document.createElement('div');
+    c.className = 'tcard' + (S.selId === item.id ? ' sel' : '');
+    c.innerHTML = `<img src="${item.el.src}">
+      <button class="tdel" onclick="delById('${item.id}');event.stopPropagation()">×</button>
+      <input class="ttag" type="text" placeholder="标签" value="${item.tag}"
+        oninput="setTag('${item.id}',this.value)" onclick="event.stopPropagation()" onfocus="event.stopPropagation()">`;
+    c.addEventListener('click', () => selectImg(item.id));
+    g.appendChild(c);
   });
 }
 
-function updateTag(id, val) {
-  const item = S.images.find(i => i.id === id);
-  if (item) { item.tag = val; draw(); }
+function setTag(id, v) {
+  const it = S.imgs.find(i => i.id === id);
+  if (it) { it.tag = v; draw(); }
 }
-
-function deleteById(id) {
-  S.images = S.images.filter(i => i.id !== id);
-  if (S.selectedId === id) deselect();
+function delById(id) {
+  S.imgs = S.imgs.filter(i => i.id !== id);
+  if (S.selId === id) deselect();
   buildThumbs(); draw(); extractColors();
 }
-
-function deleteSelected() {
-  if (S.selectedId && S.selectedType === 'img') deleteById(S.selectedId);
-  else if (S.selectedId && S.selectedType === 'text') {
-    S.texts = S.texts.filter(t => t.id !== S.selectedId);
-    deselect(); buildTextList(); draw();
-  }
+function delSel() {
+  if (!S.selId) return;
+  if (S.selType === 'img') delById(S.selId);
+  else { S.txts = S.txts.filter(t => t.id !== S.selId); deselect(); buildTxtList(); draw(); }
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // SELECTION
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function selectImg(id) {
-  S.selectedId = id; S.selectedType = 'img';
-  buildThumbs();
-  const item = S.images.find(i => i.id === id);
-  if (item) {
-    document.getElementById('imgRotate').value = Math.round(item.rot);
-    document.getElementById('imgRotateVal').textContent = Math.round(item.rot) + '°';
-    const pct = Math.round(item.w / item.scaleBase * 100);
-    document.getElementById('imgScale').value = pct;
-    document.getElementById('imgScaleVal').textContent = pct + '%';
+  S.selId = id; S.selType = 'img';
+  const it = S.imgs.find(i => i.id === id);
+  if (it) {
+    document.getElementById('sRot').value = Math.round(it.rot);
+    document.getElementById('sRotV').textContent = Math.round(it.rot) + '°';
+    document.getElementById('sW').value = Math.round(it.w);
+    document.getElementById('sWV').textContent = Math.round(it.w);
+    document.getElementById('sH').value = Math.round(it.h);
+    document.getElementById('sHV').textContent = Math.round(it.h);
+    document.getElementById('selLbl').textContent = '选中：' + (it.tag || '图片');
   }
-  document.getElementById('imgControls').style.display = 'block';
+  document.getElementById('selBox').classList.add('on');
+  buildThumbs(); draw();
+  // switch to upload tab to show controls
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x => x.classList.remove('on'));
+  document.querySelector('[data-t="upload"]').classList.add('on');
+  document.getElementById('tab-upload').classList.add('on');
+}
+
+function selectTxt(id) {
+  S.selId = id; S.selType = 'txt';
+  const t = S.txts.find(x => x.id === id);
+  if (t) {
+    document.getElementById('tCol').value = t.color;
+    document.getElementById('tSz').value = t.size;
+    document.getElementById('tSzV').textContent = t.size;
+    document.getElementById('tAlpha').value = Math.round(t.alpha * 100);
+    document.getElementById('tAlphaV').textContent = Math.round(t.alpha * 100) + '%';
+    // set font select
+    const sel = document.getElementById('tFont');
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === t.font) { sel.selectedIndex = i; break; }
+    }
+  }
+  // switch to txt tab
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x => x.classList.remove('on'));
+  document.querySelector('[data-t="txt"]').classList.add('on');
+  document.getElementById('tab-txt').classList.add('on');
   draw();
 }
 
 function deselect() {
-  S.selectedId = null; S.selectedType = null;
-  document.getElementById('imgControls').style.display = 'none';
+  S.selId = null; S.selType = null;
+  document.getElementById('selBox').classList.remove('on');
   buildThumbs(); draw();
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // IMG CONTROLS
-// ══════════════════════════════════════════
-document.getElementById('imgRotate').oninput = function() {
-  document.getElementById('imgRotateVal').textContent = this.value + '°';
-  const item = S.images.find(i => i.id === S.selectedId);
-  if (item) { item.rot = parseFloat(this.value); draw(); }
+// ════════════════════════════════════════
+document.getElementById('sRot').oninput = function () {
+  document.getElementById('sRotV').textContent = this.value + '°';
+  const it = S.imgs.find(i => i.id === S.selId);
+  if (it) { it.rot = parseFloat(this.value); draw(); }
 };
-document.getElementById('imgScale').oninput = function() {
-  document.getElementById('imgScaleVal').textContent = this.value + '%';
-  const item = S.images.find(i => i.id === S.selectedId);
-  if (item) {
-    const ratio = parseFloat(this.value) / 100;
-    const aspect = item.h / item.w;
-    item.w = item.scaleBase * ratio;
-    item.h = item.w * aspect;
-    draw();
-  }
+document.getElementById('sW').oninput = function () {
+  document.getElementById('sWV').textContent = this.value;
+  const it = S.imgs.find(i => i.id === S.selId);
+  if (it) { it.w = parseFloat(this.value); draw(); }
 };
-function bringForward() {
-  const item = S.images.find(i => i.id === S.selectedId);
-  if (item) { item.z = Math.max(...S.images.map(i=>i.z)) + 1; draw(); }
+document.getElementById('sH').oninput = function () {
+  document.getElementById('sHV').textContent = this.value;
+  const it = S.imgs.find(i => i.id === S.selId);
+  if (it) { it.h = parseFloat(this.value); draw(); }
+};
+function bringTop() {
+  const it = S.imgs.find(i => i.id === S.selId);
+  if (it) { it.z = Math.max(...S.imgs.map(i => i.z), 0) + 1; draw(); }
 }
-function resetRotation() { S.images.forEach(i => i.rot = 0); draw(); }
+function clearRot() { S.imgs.forEach(i => i.rot = 0); draw(); }
 
-// ══════════════════════════════════════════
-// BG CONTROLS
-// ══════════════════════════════════════════
-document.getElementById('bgColor').oninput = function() { S.bg = this.value; applyBg(); };
-document.getElementById('bgBright').oninput = function() {
+// ════════════════════════════════════════
+// BG
+// ════════════════════════════════════════
+document.getElementById('bgCol').oninput = function () { S.bg = this.value; calcBg(); draw(); };
+document.getElementById('bgBr').oninput = function () {
   S.bgBright = parseInt(this.value);
-  document.getElementById('bgBrightVal').textContent = this.value;
-  applyBg();
+  document.getElementById('bgBrV').textContent = this.value;
+  calcBg(); draw();
 };
-document.getElementById('cornerOp').oninput = function() { S.cornerOp = this.value/100; draw(); };
-document.getElementById('dotsOp').oninput = function() { S.dotsOp = this.value/100; draw(); };
-
-function applyBg() {
-  const [r,g,b] = hexToRgb(S.bg);
-  const k = S.bgBright / 80;
-  S.bgFinal = toHex(clamp(r*k), clamp(g*k), clamp(b*k));
+document.getElementById('cornOp').oninput = function () {
+  S.cornOp = this.value / 100;
+  document.getElementById('cornOpV').textContent = this.value;
   draw();
-}
-applyBg();
+};
+document.getElementById('dotsOp').oninput = function () {
+  S.dotsOp = this.value / 100;
+  document.getElementById('dotsOpV').textContent = this.value;
+  draw();
+};
 
-// ══════════════════════════════════════════
-// COLOR EXTRACTION
-// ══════════════════════════════════════════
+function calcBg() {
+  const [r, g, b] = hexRgb(S.bg);
+  const k = S.bgBright / 80;
+  S.bgFinal = toHex(cl(r * k), cl(g * k), cl(b * k));
+}
+calcBg();
+
+// ════════════════════════════════════════
+// COLOR EXTRACT
+// ════════════════════════════════════════
 function extractColors() {
-  if (!S.images.length) return;
-  const results = [];
-  let done = 0;
-  S.images.forEach(item => {
-    const c = document.createElement('canvas');
-    c.width = 32; c.height = 32;
+  if (!S.imgs.length) return;
+  const res = []; let done = 0;
+  S.imgs.forEach(it => {
+    const c = document.createElement('canvas'); c.width = 24; c.height = 24;
     const cx = c.getContext('2d');
-    cx.drawImage(item.img, 0, 0, 32, 32);
-    const d = cx.getImageData(0,0,32,32).data;
-    let r=0,g=0,b=0,n=0;
-    for(let i=0;i<d.length;i+=8){r+=d[i];g+=d[i+1];b+=d[i+2];n++;}
-    r=Math.round(r/n); g=Math.round(g/n); b=Math.round(b/n);
-    results.push([r,g,b]);
-    if(++done === S.images.length) buildPalette(results);
+    cx.drawImage(it.el, 0, 0, 24, 24);
+    const d = cx.getImageData(0, 0, 24, 24).data;
+    let r = 0, g = 0, b = 0, n = 0;
+    for (let i = 0; i < d.length; i += 8) { r += d[i]; g += d[i + 1]; b += d[i + 2]; n++; }
+    res.push([Math.round(r / n), Math.round(g / n), Math.round(b / n)]);
+    if (++done === S.imgs.length) buildPalette(res);
   });
 }
 
 function buildPalette(rgbs) {
-  const row = document.getElementById('autoPalette');
-  row.innerHTML = '';
-  const variants = [];
-  rgbs.forEach(([r,g,b]) => {
-    variants.push(toHex(clamp(r*0.4), clamp(g*0.38), clamp(b*0.35)));
-    variants.push(toHex(clamp(r*0.55), clamp(g*0.5), clamp(b*0.45)));
-    variants.push(toHex(clamp(r*0.25), clamp(g*0.23), clamp(b*0.2)));
+  const pal = document.getElementById('autoPal');
+  pal.innerHTML = '';
+  const cols = [];
+  rgbs.forEach(([r, g, b]) => {
+    cols.push(toHex(cl(r * .35), cl(g * .32), cl(b * .28)));
+    cols.push(toHex(cl(r * .5), cl(g * .46), cl(b * .4)));
+    cols.push(toHex(cl(r * .22), cl(g * .2), cl(b * .18)));
   });
-  const unique = [...new Set(variants)].slice(0,10);
-  unique.forEach(color => {
+  [...new Set(cols)].slice(0, 10).forEach(col => {
     const sw = document.createElement('div');
-    sw.className = 'pal-swatch';
-    sw.style.background = color;
-    sw.title = color;
+    sw.className = 'psw'; sw.style.background = col; sw.title = col;
     sw.onclick = () => {
-      document.querySelectorAll('.pal-swatch').forEach(s=>s.classList.remove('active'));
-      sw.classList.add('active');
-      S.bg = color;
-      document.getElementById('bgColor').value = color;
-      applyBg();
+      document.querySelectorAll('.psw').forEach(s => s.classList.remove('on'));
+      sw.classList.add('on');
+      S.bg = col; document.getElementById('bgCol').value = col; calcBg(); draw();
     };
-    row.appendChild(sw);
+    pal.appendChild(sw);
   });
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // TEXT
-// ══════════════════════════════════════════
-function addText(txt='(moments)') {
-  const id = uid();
-  S.texts.push({
-    id, text: txt,
-    x: 20 + Math.random() * (S.canvasW - 100),
-    y: 30 + Math.random() * (S.canvasH - 40),
-    color: document.getElementById('textColor').value,
-    font: document.getElementById('fontSel').value,
-    size: parseInt(document.getElementById('fontSize').value),
+// ════════════════════════════════════════
+function addTxt(text = '（moments）') {
+  S.txts.push({
+    id: nid(), text,
+    x: 20 + Math.random() * (S.cW - 110),
+    y: 32 + Math.random() * (S.cH - 44),
+    color: document.getElementById('tCol').value,
+    font: document.getElementById('tFont').value,
+    size: parseInt(document.getElementById('tSz').value),
+    alpha: 1,
   });
-  buildTextList(); draw();
+  buildTxtList(); draw();
 }
 
-function buildTextList() {
-  const list = document.getElementById('textList');
-  list.innerHTML = '';
-  S.texts.forEach(t => {
+function buildTxtList() {
+  const l = document.getElementById('txtList');
+  l.innerHTML = '';
+  S.txts.forEach(t => {
     const row = document.createElement('div');
-    row.className = 'text-row';
-    row.innerHTML = `<input type="text" value="${t.text}" oninput="updateTextContent('${t.id}',this.value)">
-      <button onclick="removeText('${t.id}')">×</button>`;
-    list.appendChild(row);
+    row.className = 'trow';
+    row.innerHTML = `<input type="text" value="${t.text.replace(/"/g,'&quot;')}" oninput="updTxt('${t.id}',this.value)">
+      <button onclick="rmTxt('${t.id}')">×</button>`;
+    l.appendChild(row);
   });
 }
+function updTxt(id, v) { const t = S.txts.find(x => x.id === id); if (t) { t.text = v; draw(); } }
+function rmTxt(id) { S.txts = S.txts.filter(t => t.id !== id); if (S.selId === id) S.selId = null; buildTxtList(); draw(); }
 
-function updateTextContent(id, val) {
-  const t = S.texts.find(x=>x.id===id);
-  if(t){t.text=val;draw();}
-}
-function removeText(id) {
-  S.texts = S.texts.filter(t=>t.id!==id);
-  buildTextList(); draw();
-}
-
-document.getElementById('textColor').oninput = function() {
-  if(S.selectedType==='text') {
-    const t = S.texts.find(x=>x.id===S.selectedId);
-    if(t){t.color=this.value;draw();}
-  }
+// text style controls (apply to selected text)
+document.getElementById('tCol').oninput = function () {
+  const t = S.txts.find(x => x.id === S.selId);
+  if (t) { t.color = this.value; draw(); }
 };
-document.getElementById('fontSel').onchange = function() {
-  if(S.selectedType==='text') {
-    const t = S.texts.find(x=>x.id===S.selectedId);
-    if(t){t.font=this.value;draw();}
-  }
+document.getElementById('tFont').onchange = function () {
+  const t = S.txts.find(x => x.id === S.selId);
+  if (t) { t.font = this.value; draw(); }
 };
-document.getElementById('fontSize').oninput = function() {
-  document.getElementById('fontSizeVal').textContent = this.value;
-  if(S.selectedType==='text') {
-    const t = S.texts.find(x=>x.id===S.selectedId);
-    if(t){t.size=parseInt(this.value);draw();}
-  }
+document.getElementById('tSz').oninput = function () {
+  document.getElementById('tSzV').textContent = this.value;
+  const t = S.txts.find(x => x.id === S.selId);
+  if (t) { t.size = parseInt(this.value); draw(); }
+};
+document.getElementById('tAlpha').oninput = function () {
+  document.getElementById('tAlphaV').textContent = this.value + '%';
+  const t = S.txts.find(x => x.id === S.selId);
+  if (t) { t.alpha = this.value / 100; draw(); }
 };
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // CANVAS SIZE
-// ══════════════════════════════════════════
-document.getElementById('cvW').oninput = function() {
-  S.canvasW = parseInt(this.value);
-  document.getElementById('cvWVal').textContent = this.value;
-  canvas.width = S.canvasW; draw();
+// ════════════════════════════════════════
+document.getElementById('cvW').oninput = function () {
+  S.cW = parseInt(this.value); document.getElementById('cvWV').textContent = this.value + 'px';
+  cvs.width = S.cW; draw();
 };
-document.getElementById('cvH').oninput = function() {
-  S.canvasH = parseInt(this.value);
-  document.getElementById('cvHVal').textContent = this.value;
-  canvas.height = S.canvasH; draw();
+document.getElementById('cvH').oninput = function () {
+  S.cH = parseInt(this.value); document.getElementById('cvHV').textContent = this.value + 'px';
+  cvs.height = S.cH; draw();
 };
-document.getElementById('defSize').oninput = function() { document.getElementById('defSizeVal').textContent = this.value; };
-document.getElementById('maxRot').oninput = function() { document.getElementById('maxRotVal').textContent = this.value + '°'; };
-document.getElementById('animDelay').oninput = function() { document.getElementById('animDelayVal').textContent = this.value + 'ms'; };
-document.getElementById('animDur').oninput = function() { document.getElementById('animDurVal').textContent = this.value + 'ms'; };
+document.getElementById('defSz').oninput = function () { document.getElementById('defSzV').textContent = this.value; };
+document.getElementById('maxRot').oninput = function () { document.getElementById('maxRotV').textContent = this.value + '°'; };
+document.getElementById('animDel').oninput = function () { document.getElementById('animDelV').textContent = this.value + 'ms'; };
+document.getElementById('animDur').oninput = function () { document.getElementById('animDurV').textContent = this.value + 'ms'; };
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // LAYOUTS
-// ══════════════════════════════════════════
-function randomLayout() {
-  const maxRot = parseInt(document.getElementById('maxRot').value);
-  const defSize = parseInt(document.getElementById('defSize').value);
-  S.images.forEach(item => {
-    const w = defSize * (0.7 + Math.random()*0.7);
-    const aspect = item.img.naturalHeight / item.img.naturalWidth;
-    item.w = w; item.h = w * Math.max(0.6, Math.min(1.5, aspect));
-    item.scaleBase = w;
-    item.x = 10 + Math.random() * Math.max(10, S.canvasW - item.w - 20);
-    item.y = 10 + Math.random() * Math.max(10, S.canvasH - item.h - 20);
-    item.rot = (Math.random()-0.5)*2*maxRot;
+// ════════════════════════════════════════
+function rndLayout() {
+  const defSz = parseInt(document.getElementById('defSz').value);
+  const mr = parseInt(document.getElementById('maxRot').value);
+  S.imgs.forEach(it => {
+    const w = defSz * (.7 + Math.random() * .7);
+    const asp = it.el.naturalHeight / it.el.naturalWidth;
+    it.w = w; it.h = w * Math.max(.55, Math.min(1.6, asp));
+    it.x = 12 + Math.random() * Math.max(10, S.cW - it.w - 24);
+    it.y = 12 + Math.random() * Math.max(10, S.cH - it.h - 24);
+    it.rot = (Math.random() - .5) * 2 * mr;
   });
   draw();
 }
-
 function gridLayout() {
-  const n = S.images.length; if(!n) return;
+  const n = S.imgs.length; if (!n) return;
   const cols = Math.ceil(Math.sqrt(n));
-  const rows = Math.ceil(n/cols);
-  const pad=16, gap=8;
-  const cw = (S.canvasW-pad*2-gap*(cols-1))/cols;
-  const ch = (S.canvasH-pad*2-gap*(rows-1))/rows;
-  S.images.forEach((item,i) => {
-    item.x = pad + (i%cols)*(cw+gap);
-    item.y = pad + Math.floor(i/cols)*(ch+gap);
-    item.w = cw; item.h = ch; item.rot = 0; item.scaleBase = cw;
+  const rows = Math.ceil(n / cols);
+  const pad = 14, gap = 8;
+  const cw = (S.cW - pad * 2 - gap * (cols - 1)) / cols;
+  const ch = (S.cH - pad * 2 - gap * (rows - 1)) / rows;
+  S.imgs.forEach((it, i) => {
+    it.x = pad + (i % cols) * (cw + gap); it.y = pad + Math.floor(i / cols) * (ch + gap);
+    it.w = cw; it.h = ch; it.rot = 0;
   });
   draw();
 }
 
-// ══════════════════════════════════════════
-// DRAW  (main render to canvas)
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
+// DRAW  — renders to the visible canvas
+// ════════════════════════════════════════
+function drawTo(tctx, tW, tH, alphas, scale) {
+  scale = scale || 1;
+  tctx.save();
+  tctx.scale(scale, scale);
+
+  // bg
+  tctx.fillStyle = S.bgFinal;
+  tctx.fillRect(0, 0, tW, tH);
+
+  // dots
+  if (S.dotsOp > 0) drawDots(tctx, tW, tH);
+
+  // images sorted by z
+  [...S.imgs].sort((a, b) => a.z - b.z).forEach(it => {
+    const a = alphas ? (alphas[it.id] ?? 0) : 1;
+    if (a <= 0) return;
+    tctx.save();
+    tctx.globalAlpha = a;
+    tctx.translate(it.x + it.w / 2, it.y + it.h / 2);
+    tctx.rotate(it.rot * Math.PI / 180);
+    tctx.shadowColor = 'rgba(0,0,0,.45)';
+    tctx.shadowBlur = 10; tctx.shadowOffsetX = 3; tctx.shadowOffsetY = 4;
+    tctx.drawImage(it.el, -it.w / 2, -it.h / 2, it.w, it.h);
+    tctx.shadowBlur = 0; tctx.shadowOffsetX = 0; tctx.shadowOffsetY = 0;
+    if (it.tag) {
+      tctx.font = `12px 'Ma Shan Zheng', cursive`;
+      tctx.fillStyle = 'rgba(255,255,255,.85)';
+      tctx.fillText('(' + it.tag + ')', -it.w / 2 + 5, it.h / 2 - 6);
+    }
+    // selection ring (only on visible canvas, not export)
+    if (!alphas && !scale && S.selId === it.id) {
+      tctx.strokeStyle = '#c8a96e'; tctx.lineWidth = 2;
+      tctx.setLineDash([5, 3]);
+      tctx.strokeRect(-it.w / 2 - 3, -it.h / 2 - 3, it.w + 6, it.h + 6);
+      tctx.setLineDash([]);
+    }
+    tctx.restore();
+  });
+
+  // texts
+  S.txts.forEach(t => {
+    const a = alphas ? (alphas[t.id] ?? 0) : 1;
+    if (a <= 0) return;
+    tctx.save();
+    tctx.globalAlpha = a * (t.alpha ?? 1);
+    tctx.font = `${t.size}px '${t.font}', sans-serif`;
+    tctx.fillStyle = t.color;
+    tctx.shadowColor = 'rgba(0,0,0,.3)'; tctx.shadowBlur = 5;
+    tctx.fillText(t.text, t.x, t.y);
+    tctx.shadowBlur = 0;
+    if (!alphas && S.selId === t.id) {
+      const mw = tctx.measureText(t.text).width;
+      tctx.strokeStyle = '#c8a96e'; tctx.lineWidth = 1.5;
+      tctx.setLineDash([4, 3]);
+      tctx.strokeRect(t.x - 3, t.y - t.size - 3, mw + 6, t.size + 8);
+      tctx.setLineDash([]);
+    }
+    tctx.restore();
+  });
+
+  // corner brackets
+  if (S.cornOp > 0) drawCorners(tctx, tW, tH);
+
+  tctx.restore();
+}
+
 function draw(alphas) {
-  // alphas: optional map id->alpha for animation
-  ctx.clearRect(0,0,S.canvasW,S.canvasH);
-
-  // Background
-  ctx.fillStyle = S.bgFinal || S.bg;
-  ctx.fillRect(0,0,S.canvasW,S.canvasH);
-
-  // Decorative dots
-  if(S.dotsOp > 0) drawDots();
-
-  // Sort images by z
-  const sorted = [...S.images].sort((a,b)=>a.z-b.z);
-  sorted.forEach(item => {
-    const alpha = alphas ? (alphas[item.id] ?? 0) : 1;
-    if(alpha <= 0) return;
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.translate(item.x + item.w/2, item.y + item.h/2);
-    ctx.rotate(item.rot * Math.PI/180);
-    // Shadow
-    ctx.shadowColor = 'rgba(0,0,0,0.45)';
-    ctx.shadowBlur = 10;
-    ctx.shadowOffsetX = 3; ctx.shadowOffsetY = 4;
-    ctx.drawImage(item.img, -item.w/2, -item.h/2, item.w, item.h);
-    ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
-    // Tag
-    if(item.tag) {
-      ctx.font = `12px 'Caveat', cursive`;
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.fillText('(' + item.tag + ')', -item.w/2 + 5, item.h/2 - 5);
-    }
-    // Selection outline
-    if(S.selectedId === item.id && !alphas) {
-      ctx.strokeStyle = '#c8a96e';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5,3]);
-      ctx.strokeRect(-item.w/2-2, -item.h/2-2, item.w+4, item.h+4);
-      ctx.setLineDash([]);
-    }
-    ctx.restore();
-  });
-
-  // Texts
-  S.texts.forEach(t => {
-    const alpha = alphas ? (alphas[t.id] ?? 0) : 1;
-    if(alpha <= 0) return;
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.font = `${t.size}px '${t.font}', sans-serif`;
-    ctx.fillStyle = t.color;
-    ctx.shadowColor = 'rgba(0,0,0,0.3)';
-    ctx.shadowBlur = 4;
-    ctx.fillText(t.text, t.x, t.y);
-    ctx.shadowBlur = 0;
-    if(S.selectedId === t.id && !alphas) {
-      const m = ctx.measureText(t.text);
-      ctx.strokeStyle = '#c8a96e';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([4,3]);
-      ctx.strokeRect(t.x-3, t.y-t.size-3, m.width+6, t.size+8);
-      ctx.setLineDash([]);
-    }
-    ctx.restore();
-  });
-
-  // Corner brackets
-  if(S.cornerOp > 0) drawCorners();
+  drawTo(ctx, S.cW, S.cH, alphas, null);
 }
 
-function drawDots() {
-  ctx.save();
-  ctx.globalAlpha = S.dotsOp;
-  const pts = [[0.05,0.1],[0.92,0.07],[0.08,0.88],[0.9,0.82],[0.15,0.48],[0.85,0.35],[0.5,0.04],[0.28,0.95],[0.68,0.92]];
-  pts.forEach(([px,py],i) => {
-    const x=px*S.canvasW, y=py*S.canvasH, s=4+(i%3)*3;
-    ctx.fillStyle = 'rgba(240,235,227,0.35)';
-    if(i%2===0){ ctx.fillRect(x,y,s,s); }
-    else{ ctx.beginPath(); ctx.arc(x,y,s/2,0,Math.PI*2); ctx.fill(); }
+function drawDots(tctx, tW, tH) {
+  tctx.save(); tctx.globalAlpha = S.dotsOp;
+  const pts = [[.05,.1],[.93,.07],[.08,.88],[.9,.83],[.16,.47],[.84,.35],[.5,.04],[.28,.95],[.67,.92],[.02,.55],[.96,.5]];
+  pts.forEach(([px, py], i) => {
+    const x = px * tW, y = py * tH, s = 4 + (i % 3) * 3;
+    tctx.fillStyle = 'rgba(240,235,227,.3)';
+    if (i % 2 === 0) tctx.fillRect(x, y, s, s);
+    else { tctx.beginPath(); tctx.arc(x, y, s / 2, 0, Math.PI * 2); tctx.fill(); }
   });
-  ctx.restore();
+  tctx.restore();
+}
+function drawCorners(tctx, tW, tH) {
+  tctx.save(); tctx.globalAlpha = S.cornOp;
+  tctx.strokeStyle = 'rgba(240,235,227,.65)'; tctx.lineWidth = 2; tctx.lineCap = 'square';
+  const m = 10, l = 26;
+  tctx.beginPath();
+  tctx.moveTo(m + l, m); tctx.lineTo(m, m); tctx.lineTo(m, m + l);
+  tctx.moveTo(tW - m - l, m); tctx.lineTo(tW - m, m); tctx.lineTo(tW - m, m + l);
+  tctx.moveTo(m + l, tH - m); tctx.lineTo(m, tH - m); tctx.lineTo(m, tH - m - l);
+  tctx.moveTo(tW - m - l, tH - m); tctx.lineTo(tW - m, tH - m); tctx.lineTo(tW - m, tH - m - l);
+  tctx.stroke(); tctx.restore();
 }
 
-function drawCorners() {
-  ctx.save();
-  ctx.globalAlpha = S.cornerOp;
-  ctx.strokeStyle = 'rgba(240,235,227,0.6)';
-  ctx.lineWidth = 2;
-  ctx.lineCap = 'square';
-  const m=10, l=28;
-  ctx.beginPath();
-  ctx.moveTo(m+l,m); ctx.lineTo(m,m); ctx.lineTo(m,m+l);
-  ctx.moveTo(S.canvasW-m-l,m); ctx.lineTo(S.canvasW-m,m); ctx.lineTo(S.canvasW-m,m+l);
-  ctx.moveTo(m+l,S.canvasH-m); ctx.lineTo(m,S.canvasH-m); ctx.lineTo(m,S.canvasH-m-l);
-  ctx.moveTo(S.canvasW-m-l,S.canvasH-m); ctx.lineTo(S.canvasW-m,S.canvasH-m); ctx.lineTo(S.canvasW-m,S.canvasH-m-l);
-  ctx.stroke();
-  ctx.restore();
-}
-
-// ══════════════════════════════════════════
-// TOUCH / MOUSE DRAG ON CANVAS
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
+// POINTER DRAG
+// ════════════════════════════════════════
 let drag = null;
 
-function getPos(e) {
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = S.canvasW / rect.width;
-  const scaleY = S.canvasH / rect.height;
+function gpos(e) {
+  const r = cvs.getBoundingClientRect();
+  const sx = S.cW / r.width, sy = S.cH / r.height;
   const src = e.touches ? e.touches[0] : e;
-  return { x: (src.clientX - rect.left) * scaleX, y: (src.clientY - rect.top) * scaleY };
+  return { x: (src.clientX - r.left) * sx, y: (src.clientY - r.top) * sy };
 }
 
-function hitTest(x, y) {
-  // Test texts first (on top)
-  for(let i=S.texts.length-1;i>=0;i--) {
-    const t = S.texts[i];
-    ctx.font = `${t.size}px '${t.font}', sans-serif`;
-    const w = ctx.measureText(t.text).width;
-    if(x>=t.x-4 && x<=t.x+w+4 && y>=t.y-t.size-4 && y<=t.y+8) return {type:'text', item:t};
-  }
-  // Test images
-  const sorted = [...S.images].sort((a,b)=>b.z-a.z);
-  for(const item of sorted) {
-    const cx=item.x+item.w/2, cy=item.y+item.h/2;
-    const dx=x-cx, dy=y-cy;
-    const rad=-item.rot*Math.PI/180;
-    const lx=dx*Math.cos(rad)-dy*Math.sin(rad);
-    const ly=dx*Math.sin(rad)+dy*Math.cos(rad);
-    if(Math.abs(lx)<=item.w/2 && Math.abs(ly)<=item.h/2) return {type:'img', item};
+function hitImg(x, y) {
+  const sorted = [...S.imgs].sort((a, b) => b.z - a.z);
+  for (const it of sorted) {
+    const cx = it.x + it.w / 2, cy = it.y + it.h / 2;
+    const dx = x - cx, dy = y - cy;
+    const rad = -it.rot * Math.PI / 180;
+    const lx = dx * Math.cos(rad) - dy * Math.sin(rad);
+    const ly = dx * Math.sin(rad) + dy * Math.cos(rad);
+    if (Math.abs(lx) <= it.w / 2 && Math.abs(ly) <= it.h / 2) return it;
   }
   return null;
 }
 
-canvas.addEventListener('mousedown', startDrag);
-canvas.addEventListener('touchstart', startDrag, {passive:false});
-
-function startDrag(e) {
-  e.preventDefault();
-  const pos = getPos(e);
-  const hit = hitTest(pos.x, pos.y);
-  if(hit) {
-    if(hit.type==='img') selectImg(hit.item.id);
-    else { S.selectedId=hit.item.id; S.selectedType='text'; }
-    drag = { item: hit.item, type: hit.type, offX: pos.x-hit.item.x, offY: pos.y-hit.item.y };
-    draw();
-  } else {
-    deselect();
+function hitTxt(x, y) {
+  for (let i = S.txts.length - 1; i >= 0; i--) {
+    const t = S.txts[i];
+    ctx.font = `${t.size}px '${t.font}', sans-serif`;
+    const mw = ctx.measureText(t.text).width;
+    if (x >= t.x - 4 && x <= t.x + mw + 4 && y >= t.y - t.size - 4 && y <= t.y + 8) return t;
   }
+  return null;
 }
 
-canvas.addEventListener('mousemove', doDrag);
-canvas.addEventListener('touchmove', doDrag, {passive:false});
-
-function doDrag(e) {
-  if(!drag) return;
+cvs.addEventListener('pointerdown', e => {
   e.preventDefault();
-  const pos = getPos(e);
-  drag.item.x = pos.x - drag.offX;
-  drag.item.y = pos.y - drag.offY;
+  const pos = gpos(e);
+  const ht = hitTxt(pos.x, pos.y);
+  if (ht) { selectTxt(ht.id); drag = { item: ht, ox: pos.x - ht.x, oy: pos.y - ht.y }; return; }
+  const hi = hitImg(pos.x, pos.y);
+  if (hi) { selectImg(hi.id); drag = { item: hi, ox: pos.x - hi.x, oy: pos.y - hi.y }; return; }
+  deselect();
+});
+cvs.addEventListener('pointermove', e => {
+  if (!drag) return;
+  e.preventDefault();
+  const pos = gpos(e);
+  drag.item.x = pos.x - drag.ox;
+  drag.item.y = pos.y - drag.oy;
   draw();
-}
+});
+cvs.addEventListener('pointerup', () => drag = null);
+cvs.addEventListener('pointercancel', () => drag = null);
 
-canvas.addEventListener('mouseup', () => drag = null);
-canvas.addEventListener('touchend', () => drag = null);
-
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // ANIMATION
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 function allIds() {
   const ids = [];
-  [...S.images].sort((a,b)=>a.z-b.z).forEach(i=>ids.push({id:i.id,type:'img'}));
-  S.texts.forEach(t=>ids.push({id:t.id,type:'text'}));
+  [...S.imgs].sort((a, b) => a.z - b.z).forEach(i => ids.push(i.id));
+  S.txts.forEach(t => ids.push(t.id));
   return ids;
 }
 
 function togglePlay() {
-  if(S.playing) { stopAnim(); return; }
+  if (S.playing) { S.playing = false; document.getElementById('playBtn').textContent = '▶ 播放'; draw(); return; }
   playAnim();
+}
+function resetAnim() {
+  S.playing = false;
+  document.getElementById('playBtn').textContent = '▶ 播放';
+  document.getElementById('animProg').style.width = '0%';
+  draw();
 }
 
 function playAnim() {
   S.playing = true;
   document.getElementById('playBtn').textContent = '⏸ 暂停';
   const ids = allIds();
-  const delay = parseInt(document.getElementById('animDelay').value);
+  const delay = parseInt(document.getElementById('animDel').value);
   const dur = parseInt(document.getElementById('animDur').value);
-  const style = document.getElementById('animStyle').value;
   const total = ids.length;
-
-  // Build per-element reveal schedule
-  const revealed = {};
-  ids.forEach(({id}) => revealed[id] = 0);
+  const alphas = {};
+  ids.forEach(id => alphas[id] = 0);
 
   let step = 0;
-  const alphas = {};
-  ids.forEach(({id}) => alphas[id] = 0);
-
-  function tick() {
-    if(!S.playing) return;
-    if(step < total) {
-      const target = ids[step].id;
-      const startTime = performance.now();
-      function animEl(now) {
-        const p = Math.min(1, (now - startTime) / dur);
-        alphas[target] = easeOut(p);
-        draw(alphas);
-        document.getElementById('progFill').style.width = ((step/total)*100 + p/total*100) + '%';
-        if(p < 1) requestAnimationFrame(animEl);
-        else {
-          alphas[target] = 1;
-          step++;
-          if(step < total) setTimeout(() => requestAnimationFrame(tick), delay);
-          else {
-            S.playing = false;
-            document.getElementById('playBtn').textContent = '▶ 播放';
-            document.getElementById('progFill').style.width = '100%';
-            draw(); // final clean draw
-            setTimeout(() => { document.getElementById('progFill').style.width = '0%'; }, 800);
-          }
-        }
+  function runStep() {
+    if (!S.playing || step >= total) {
+      if (step >= total) {
+        S.playing = false;
+        document.getElementById('playBtn').textContent = '▶ 播放';
+        ids.forEach(id => alphas[id] = 1);
+        draw();
+        setTimeout(() => document.getElementById('animProg').style.width = '0%', 700);
       }
-      requestAnimationFrame(animEl);
+      return;
     }
+    const target = ids[step];
+    const t0 = performance.now();
+    function frame(now) {
+      if (!S.playing) return;
+      const p = Math.min(1, (now - t0) / dur);
+      alphas[target] = easeOut(p);
+      draw(alphas);
+      document.getElementById('animProg').style.width = ((step + p) / total * 100) + '%';
+      if (p < 1) requestAnimationFrame(frame);
+      else {
+        alphas[target] = 1;
+        step++;
+        if (step < total) setTimeout(() => requestAnimationFrame(runStep), delay);
+        else runStep();
+      }
+    }
+    requestAnimationFrame(frame);
   }
-  requestAnimationFrame(tick);
+  requestAnimationFrame(runStep);
 }
 
-function stopAnim() {
-  S.playing = false;
-  document.getElementById('playBtn').textContent = '▶ 播放';
-  draw();
-}
+const easeOut = t => 1 - Math.pow(1 - t, 2.5);
 
-function resetAnim() {
-  stopAnim();
-  document.getElementById('progFill').style.width = '0%';
-  draw();
-}
-
-function easeOut(t) { return 1 - Math.pow(1-t, 2.5); }
-
-// ══════════════════════════════════════════
-// EXPORT PNG
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
+// EXPORT PNG  — 2× offscreen canvas
+// ════════════════════════════════════════
 function exportPNG() {
-  const saved = S.selectedId;
-  S.selectedId = null;
-  draw();
+  const scale = 2;
+  const oc = document.createElement('canvas');
+  oc.width = S.cW * scale; oc.height = S.cH * scale;
+  const oc2 = oc.getContext('2d');
+  // scale everything up
+  oc2.scale(scale, scale);
+  drawTo(oc2, S.cW, S.cH, null, null);  // draw at logical size, scaled by transform
+  const saved = S.selId; S.selId = null;
+  oc2.clearRect(0, 0, oc.width, oc.height);
+  // re-do without selection ring
+  oc2.fillStyle = S.bgFinal; oc2.fillRect(0, 0, S.cW, S.cH);
+  if (S.dotsOp > 0) drawDots(oc2, S.cW, S.cH);
+  [...S.imgs].sort((a, b) => a.z - b.z).forEach(it => {
+    oc2.save();
+    oc2.translate(it.x + it.w / 2, it.y + it.h / 2);
+    oc2.rotate(it.rot * Math.PI / 180);
+    oc2.shadowColor = 'rgba(0,0,0,.45)'; oc2.shadowBlur = 10; oc2.shadowOffsetX = 3; oc2.shadowOffsetY = 4;
+    oc2.drawImage(it.el, -it.w / 2, -it.h / 2, it.w, it.h);
+    oc2.shadowBlur = 0; oc2.shadowOffsetX = 0; oc2.shadowOffsetY = 0;
+    if (it.tag) {
+      oc2.font = `12px 'Ma Shan Zheng', cursive`; oc2.fillStyle = 'rgba(255,255,255,.85)';
+      oc2.fillText('(' + it.tag + ')', -it.w / 2 + 5, it.h / 2 - 6);
+    }
+    oc2.restore();
+  });
+  S.txts.forEach(t => {
+    oc2.save(); oc2.globalAlpha = t.alpha ?? 1;
+    oc2.font = `${t.size}px '${t.font}', sans-serif`;
+    oc2.fillStyle = t.color; oc2.shadowColor = 'rgba(0,0,0,.3)'; oc2.shadowBlur = 5;
+    oc2.fillText(t.text, t.x, t.y); oc2.shadowBlur = 0; oc2.restore();
+  });
+  if (S.cornOp > 0) drawCorners(oc2, S.cW, S.cH);
+  S.selId = saved;
+
   const link = document.createElement('a');
   link.download = 'moments-collage.png';
-  link.href = canvas.toDataURL('image/png');
+  link.href = oc.toDataURL('image/png');
   link.click();
-  S.selectedId = saved;
-  draw();
-  toast('PNG 已导出！');
+  toast('✅ PNG 已导出（' + S.cW * scale + '×' + S.cH * scale + '）');
 }
 
-// ══════════════════════════════════════════
-// EXPORT GIF  (direct canvas frame capture)
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
+// EXPORT GIF — frame-by-frame canvas capture
+// ════════════════════════════════════════
 async function exportGIF() {
-  if(S.images.length === 0 && S.texts.length === 0) { toast('请先上传图片'); return; }
-
+  if (!S.imgs.length && !S.txts.length) { toast('请先上传图片'); return; }
   const btn = document.getElementById('gifBtn');
-  btn.disabled = true;
-  btn.textContent = '⏳ 生成中...';
-  document.getElementById('gifProgress').style.display = 'block';
-  document.getElementById('gifFill').style.width = '0%';
-  document.getElementById('gifStatus').textContent = '正在渲染帧...';
+  btn.disabled = true; btn.textContent = '⏳ 生成中…';
+  document.getElementById('gifProg').style.display = 'block';
+  setGifFill(0);
+  document.getElementById('gifSt').textContent = '渲染帧…';
 
-  const fps = parseInt(document.getElementById('gifFps').value);
-  const quality = parseInt(document.getElementById('gifQuality').value);
-  const delay = parseInt(document.getElementById('animDelay').value);
+  const fps = parseInt(document.getElementById('gFps').value);
+  const quality = parseInt(document.getElementById('gQ').value);
+  const del = parseInt(document.getElementById('animDel').value);
   const dur = parseInt(document.getElementById('animDur').value);
   const ids = allIds();
   const total = ids.length;
+  const frameMs = Math.round(1000 / fps);
+  const framesPerEl = Math.max(1, Math.round(dur / frameMs));
+  const holdF = Math.max(1, Math.round(del / frameMs));
 
-  // Deselect
-  const savedSel = S.selectedId;
-  S.selectedId = null;
+  const savedSel = S.selId; S.selId = null;
 
-  // Generate frames array
-  const frames = [];
-  const frameDelay = Math.round(1000/fps);
-  const framesPerEl = Math.max(1, Math.round(dur/frameDelay));
-  const holdFrames = Math.max(1, Math.round(delay/frameDelay));
+  // offscreen canvas for frame capture
+  const fc = document.createElement('canvas');
+  fc.width = S.cW; fc.height = S.cH;
+  const fctx = fc.getContext('2d');
 
-  // blank frame
-  const alphas = {};
-  ids.forEach(({id}) => alphas[id] = 0);
-  draw(alphas);
-  frames.push({ imageData: ctx.getImageData(0,0,S.canvasW,S.canvasH), delay: 400 });
-
-  for(let i=0;i<total;i++) {
-    const target = ids[i].id;
-    // animate in
-    for(let f=1;f<=framesPerEl;f++) {
-      const p = easeOut(f/framesPerEl);
-      alphas[target] = p;
-      draw(alphas);
-      frames.push({ imageData: ctx.getImageData(0,0,S.canvasW,S.canvasH), delay: frameDelay });
-    }
-    alphas[target] = 1;
-    // hold
-    if(i < total-1) {
-      draw(alphas);
-      const hf = ctx.getImageData(0,0,S.canvasW,S.canvasH);
-      for(let h=0;h<holdFrames;h++) frames.push({ imageData: hf, delay: frameDelay });
-    }
-    document.getElementById('gifFill').style.width = ((i+1)/total*60) + '%';
-    document.getElementById('gifStatus').textContent = `渲染帧 ${i+1}/${total}...`;
-    await sleep(0);
+  function captureFrame() {
+    fctx.clearRect(0, 0, S.cW, S.cH);
+    // copy from main canvas
+    fctx.drawImage(cvs, 0, 0);
+    const tmp = document.createElement('canvas');
+    tmp.width = S.cW; tmp.height = S.cH;
+    tmp.getContext('2d').drawImage(fc, 0, 0);
+    return tmp;
   }
 
-  // hold final
+  const frames = [];
+  const alphas = {};
+  ids.forEach(id => alphas[id] = 0);
+
+  // blank hold
   draw(alphas);
-  const finalFrame = ctx.getImageData(0,0,S.canvasW,S.canvasH);
-  for(let h=0;h<Math.round(fps*1.2);h++) frames.push({ imageData: finalFrame, delay: frameDelay });
+  frames.push({ c: captureFrame(), d: 500 });
+  await sleep(0);
 
-  // restore
-  S.selectedId = savedSel;
-  draw();
+  for (let i = 0; i < total; i++) {
+    const target = ids[i];
+    for (let f = 1; f <= framesPerEl; f++) {
+      alphas[target] = easeOut(f / framesPerEl);
+      draw(alphas);
+      frames.push({ c: captureFrame(), d: frameMs });
+    }
+    alphas[target] = 1;
+    if (i < total - 1) {
+      draw(alphas);
+      const holdC = captureFrame();
+      for (let h = 0; h < holdF; h++) frames.push({ c: holdC, d: frameMs });
+    }
+    setGifFill(((i + 1) / total) * 55);
+    document.getElementById('gifSt').textContent = `渲染 ${i + 1}/${total}…`;
+    await sleep(0);
+  }
+  // final hold
+  draw(alphas);
+  const finalC = captureFrame();
+  for (let h = 0; h < fps * 1.5; h++) frames.push({ c: finalC, d: frameMs });
 
-  document.getElementById('gifStatus').textContent = `编码 GIF（${frames.length} 帧）...`;
+  S.selId = savedSel; draw();
 
-  if(typeof GIF === 'undefined') {
-    toast('GIF库加载失败，请导出PNG');
-    btn.disabled = false; btn.textContent = '🎞 导出 GIF 动图';
-    return;
+  document.getElementById('gifSt').textContent = `编码 GIF（${frames.length} 帧）…`;
+
+  if (typeof GIF === 'undefined') {
+    toast('❌ GIF库加载失败，请导出PNG'); reset(); return;
   }
 
   const gif = new GIF({
-    workers: 2,
-    quality,
-    width: S.canvasW,
-    height: S.canvasH,
+    workers: 2, quality,
+    width: S.cW, height: S.cH,
     workerScript: 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js',
   });
 
-  // Add frames from ImageData via temp canvas
-  const tmp = document.createElement('canvas');
-  tmp.width = S.canvasW; tmp.height = S.canvasH;
-  const tc = tmp.getContext('2d');
-  for(let i=0;i<frames.length;i++) {
-    tc.putImageData(frames[i].imageData, 0, 0);
-    gif.addFrame(tc, { copy: true, delay: frames[i].delay });
-    if(i%10===0) {
-      document.getElementById('gifFill').style.width = (60 + i/frames.length*30) + '%';
-      await sleep(0);
-    }
+  for (let i = 0; i < frames.length; i++) {
+    gif.addFrame(frames[i].c, { delay: frames[i].d });
+    if (i % 8 === 0) { setGifFill(55 + i / frames.length * 35); await sleep(0); }
   }
 
-  gif.on('progress', p => {
-    document.getElementById('gifFill').style.width = (90 + p*10) + '%';
-    document.getElementById('gifStatus').textContent = `最终处理 ${Math.round(p*100)}%...`;
-  });
-
+  gif.on('progress', p => { setGifFill(90 + p * 10); document.getElementById('gifSt').textContent = `压缩 ${Math.round(p * 100)}%…`; });
   gif.on('finished', blob => {
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'moments-collage.gif';
-    a.click();
-    btn.disabled = false; btn.textContent = '🎞 导出 GIF 动图';
-    document.getElementById('gifProgress').style.display = 'none';
-    document.getElementById('gifStatus').textContent = '';
-    toast('GIF 已导出！大约 ' + (blob.size/1024).toFixed(0) + ' KB');
+    const a = document.createElement('a'); a.href = url; a.download = 'moments-collage.gif'; a.click();
+    toast('✅ GIF 已导出（' + (blob.size / 1024).toFixed(0) + ' KB）');
+    reset();
   });
-
+  gif.on('error', err => { toast('❌ GIF生成失败: ' + err); reset(); });
   gif.render();
+
+  function reset() {
+    btn.disabled = false; btn.textContent = '🎞 导出 GIF';
+    document.getElementById('gifProg').style.display = 'none';
+    document.getElementById('gifSt').textContent = '';
+  }
 }
 
+function setGifFill(p) { document.getElementById('gifFill').style.width = p + '%'; }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// ══════════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════════
-let toastTimer;
+// ════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════
+function hexRgb(hex) { return [parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)]; }
+function toHex(r,g,b){return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');}
+function cl(v){return Math.min(255,Math.max(0,Math.round(v)));}
+
+let toastT;
 function toast(msg) {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+  el.textContent = msg; el.classList.add('on');
+  clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 2800);
 }
 
-// ══════════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════════
-function hexToRgb(hex) {
-  return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
-}
-function toHex(r,g,b) { return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join(''); }
-function clamp(v) { return Math.min(255, Math.max(0, Math.round(v))); }
-
-// ══════════════════════════════════════════
+// ════════════════════════════════════════
 // INIT
-// ══════════════════════════════════════════
-addText('(moments)');
-buildTextList();
+// ════════════════════════════════════════
+addTxt('（moments）');
+buildTxtList();
 draw();
 </script>
 </body>
